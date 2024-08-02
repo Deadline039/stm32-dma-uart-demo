@@ -249,6 +249,7 @@ void uart_dmatx_init(UART_HandleTypeDef *huart) {
         }
 
         usart1_tx_buf.tc_flag = 1;
+        usart1_tx_buf.head_ptr = 0;
 
         __HAL_RCC_DMA1_CLK_ENABLE();
         if (HAL_DMA_Init(&usart1_dmatx_handle) != HAL_OK) {
@@ -272,6 +273,7 @@ void uart_dmatx_init(UART_HandleTypeDef *huart) {
         }
 
         usart2_tx_buf.tc_flag = 1;
+        usart2_tx_buf.head_ptr = 0;
 
         __HAL_RCC_DMA1_CLK_ENABLE();
         if (HAL_DMA_Init(&usart2_dmatx_handle) != HAL_OK) {
@@ -295,6 +297,7 @@ void uart_dmatx_init(UART_HandleTypeDef *huart) {
         }
 
         usart3_tx_buf.tc_flag = 1;
+        usart3_tx_buf.head_ptr = 0;
 
         __HAL_RCC_DMA1_CLK_ENABLE();
         if (HAL_DMA_Init(&usart3_dmatx_handle) != HAL_OK) {
@@ -318,6 +321,7 @@ void uart_dmatx_init(UART_HandleTypeDef *huart) {
         }
 
         uart4_tx_buf.tc_flag = 1;
+        uart4_tx_buf.head_ptr = 0;
 
         __HAL_RCC_DMA2_CLK_ENABLE();
         if (HAL_DMA_Init(&uart4_dmatx_handle) != HAL_OK) {
@@ -630,7 +634,7 @@ uint32_t uart_dmatx_write(UART_HandleTypeDef *huart, const void *data,
 }
 
 /**
- * @brief 把FIFO中的数据通过DMA发送
+ * @brief 把缓冲区中的数据通过DMA发送
  *
  * @param huart 串口句柄
  * @return 成功发送的长度

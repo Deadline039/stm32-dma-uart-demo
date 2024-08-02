@@ -404,7 +404,9 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
  * @param huart 串口句柄
  */
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
-    uart_dmatx_clear_tc_flag(huart);
+    if (huart->hdmatx != NULL) {
+        uart_dmatx_clear_tc_flag(huart);
+    }
 }
 
 /**
@@ -415,10 +417,10 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
  *       否则该函数结构会变得非常复杂
  */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-    if (huart->hdmarx == NULL) {
-        return;
+    if (huart->hdmarx != NULL) {
+        uart_dmarx_done_callback(huart);
     }
-    uart_dmarx_done_callback(huart);
+    
 }
 
 /**
@@ -427,7 +429,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
  * @param huart 串口句柄
  */
 void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart) {
-    uart_dmarx_halfdone_callback(huart);
+    if (huart->hdmarx != NULL) {
+        uart_dmarx_halfdone_callback(huart);
+    }
+    
 }
 
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS == 1 */
