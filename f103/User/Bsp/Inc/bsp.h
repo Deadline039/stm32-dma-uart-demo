@@ -9,16 +9,16 @@
 #ifndef __BSP_H
 #define __BSP_H
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "delay.h"
 #include "key.h"
 #include "led.h"
-#include "retarget_io.h"
 #include "stm32f1xx_hal.h"
 #include "uart.h"
 
 void bsp_init(void);
-void bsp_error_handle(void);
 
 #endif /* __BSP_H */

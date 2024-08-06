@@ -143,6 +143,8 @@ void UART5_IRQHandler(void) {
 void uart_init(UART_HandleTypeDef *huart, uint32_t baud_rate,
                uint32_t word_length, uint32_t stop_bits, uint32_t parity,
                uint32_t hw_flow_ctrl, uint32_t mode) {
+    HAL_StatusTypeDef res = HAL_OK;
+
     huart->Init.BaudRate = baud_rate;
     huart->Init.WordLength = word_length;
     huart->Init.StopBits = stop_bits;
@@ -150,9 +152,10 @@ void uart_init(UART_HandleTypeDef *huart, uint32_t baud_rate,
     huart->Init.HwFlowCtl = hw_flow_ctrl;
     huart->Init.Mode = mode;
 
-    if (HAL_UART_Init(huart) != HAL_OK) {
-        bsp_error_handle();
-    }
+    res = HAL_UART_Init(huart);
+#ifdef DEBUG
+    assert(res == HAL_OK);
+#endif /* DEBUG */
 
     /* 如果没有打开宏, 将直接返回 */
     uart_dmatx_init(huart);
@@ -332,14 +335,12 @@ void uart_printf(UART_HandleTypeDef *huart, const char *__format, ...) {
     vsnprintf(print_buffer, sizeof(print_buffer), __format, ap);
     va_end(ap);
 
-    size_t len = strlen(print_buffer);
+    uint16_t len = strlen(print_buffer);
 
     if (huart->hdmatx == NULL) {
-        HAL_UART_Transmit(huart, (uint8_t *)print_buffer, (uint16_t)len,
-                          0xFFFF);
+        HAL_UART_Transmit(huart, (uint8_t *)print_buffer, len, 0xFFFF);
     } else {
-        uart_dmatx_write(huart, (void *)print_buffer, len);
-        uart_dmatx_send(huart);
+        HAL_UART_Transmit_DMA(huart, (uint8_t *)print_buffer, len);
     }
 }
 
@@ -404,9 +405,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
  * @param huart 串口句柄
  */
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
-    if (huart->hdmatx != NULL) {
-        uart_dmatx_clear_tc_flag(huart);
-    }
+    uart_dmatx_clear_tc_flag(huart);
 }
 
 /**
@@ -417,10 +416,10 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
  *       否则该函数结构会变得非常复杂
  */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-    if (huart->hdmarx != NULL) {
-        uart_dmarx_done_callback(huart);
+    if (huart->hdmarx == NULL) {
+        return;
     }
-    
+    uart_dmarx_done_callback(huart);
 }
 
 /**
@@ -429,10 +428,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
  * @param huart 串口句柄
  */
 void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart) {
-    if (huart->hdmarx != NULL) {
-        uart_dmarx_halfdone_callback(huart);
-    }
-    
+    uart_dmarx_halfdone_callback(huart);
 }
 
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS == 1 */

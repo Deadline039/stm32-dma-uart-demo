@@ -12,6 +12,7 @@
 #include "bsp.h"
 #include "ring_fifo.h"
 #include "uart.h"
+
 #include <string.h>
 
 void uart_dmatx_clear_tc_flag(UART_HandleTypeDef *huart);
@@ -238,23 +239,26 @@ void DMA2_Channel3_IRQHandler(void) {
  * @param huart 串口句柄
  */
 void uart_dmatx_init(UART_HandleTypeDef *huart) {
+    HAL_StatusTypeDef res = HAL_OK;
+
     if (huart->Instance == USART1) {
 
 #if USART1_USE_DMA_TX
         usart1_tx_buf.send_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * USART1_TX_BUF_SIZE);
         usart1_tx_buf.send_buf_size = USART1_TX_BUF_SIZE;
-        if (usart1_tx_buf.send_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart1_tx_buf.send_buf != NULL);
+#endif /* DEBUG */
 
         usart1_tx_buf.tc_flag = 1;
-        usart1_tx_buf.head_ptr = 0;
 
         __HAL_RCC_DMA1_CLK_ENABLE();
-        if (HAL_DMA_Init(&usart1_dmatx_handle) != HAL_OK) {
-            bsp_error_handle();
-        }
+        res = HAL_DMA_Init(&usart1_dmatx_handle);
+#ifdef DEBUG
+        assert(res == HAL_OK);
+#endif /* DEBUG */
+
         __HAL_LINKDMA(&usart1_handle, hdmatx, usart1_dmatx_handle);
 
         HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, USART1_DMA_TX_IT_PREEMPT,
@@ -268,17 +272,18 @@ void uart_dmatx_init(UART_HandleTypeDef *huart) {
         usart2_tx_buf.send_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * USART2_TX_BUF_SIZE);
         usart2_tx_buf.send_buf_size = USART2_TX_BUF_SIZE;
-        if (usart2_tx_buf.send_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart2_tx_buf.send_buf != NULL);
+#endif /* DEBUG */
 
         usart2_tx_buf.tc_flag = 1;
-        usart2_tx_buf.head_ptr = 0;
 
         __HAL_RCC_DMA1_CLK_ENABLE();
-        if (HAL_DMA_Init(&usart2_dmatx_handle) != HAL_OK) {
-            bsp_error_handle();
-        }
+        res = HAL_DMA_Init(&usart2_dmatx_handle);
+#ifdef DEBUG
+        assert(res == HAL_OK);
+#endif /* DEBUG */
+
         __HAL_LINKDMA(&usart2_handle, hdmatx, usart2_dmatx_handle);
 
         HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, USART2_DMA_TX_IT_PREEMPT,
@@ -292,17 +297,18 @@ void uart_dmatx_init(UART_HandleTypeDef *huart) {
         usart3_tx_buf.send_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * USART3_TX_BUF_SIZE);
         usart3_tx_buf.send_buf_size = USART3_TX_BUF_SIZE;
-        if (usart3_tx_buf.send_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart3_tx_buf.send_buf != NULL);
+#endif /* DEBUG */
 
         usart3_tx_buf.tc_flag = 1;
-        usart3_tx_buf.head_ptr = 0;
 
         __HAL_RCC_DMA1_CLK_ENABLE();
-        if (HAL_DMA_Init(&usart3_dmatx_handle) != HAL_OK) {
-            bsp_error_handle();
-        }
+        res = HAL_DMA_Init(&usart3_dmatx_handle);
+#ifdef DEBUG
+        assert(res == HAL_OK);
+#endif /* DEBUG */
+
         __HAL_LINKDMA(&usart3_handle, hdmatx, usart3_dmatx_handle);
 
         HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, USART3_DMA_TX_IT_PREEMPT,
@@ -316,17 +322,18 @@ void uart_dmatx_init(UART_HandleTypeDef *huart) {
         uart4_tx_buf.send_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * UART4_TX_BUF_SIZE);
         uart4_tx_buf.send_buf_size = UART4_TX_BUF_SIZE;
-        if (uart4_tx_buf.send_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(uart4_tx_buf.send_buf != NULL);
+#endif /* DEBUG */
 
         uart4_tx_buf.tc_flag = 1;
-        uart4_tx_buf.head_ptr = 0;
 
         __HAL_RCC_DMA2_CLK_ENABLE();
-        if (HAL_DMA_Init(&uart4_dmatx_handle) != HAL_OK) {
-            bsp_error_handle();
-        }
+        res = HAL_DMA_Init(&uart4_dmatx_handle);
+#ifdef DEBUG
+        assert(res == HAL_OK);
+#endif /* DEBUG */
+
         __HAL_LINKDMA(&uart4_handle, hdmatx, uart4_dmatx_handle);
 
         HAL_NVIC_SetPriority(DMA2_Channel4_5_IRQn, UART4_DMA_TX_IT_PREEMPT,
@@ -350,33 +357,36 @@ void uart_dmatx_init(UART_HandleTypeDef *huart) {
  * @param huart 串口句柄
  */
 void uart_dmarx_init(UART_HandleTypeDef *huart) {
+    HAL_StatusTypeDef res = HAL_OK;
+
     if (huart->Instance == USART1) {
 
 #if USART1_USE_DMA_RX
         usart1_rx_fifo.head_ptr = 0;
         usart1_rx_fifo.recv_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * USART1_RX_BUF_SIZE);
-        if (usart1_rx_fifo.recv_buf == NULL) {
-            bsp_error_handle();
-        }
-
+#ifdef DEBUG
+        assert(usart1_rx_fifo.recv_buf != NULL);
+#endif /* DEBUG */
         usart1_rx_fifo.rx_fifo_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * USART1_RX_FIFO_SZIE);
-        if (usart1_rx_fifo.recv_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart1_rx_fifo.rx_fifo_buf != NULL);
+#endif /* DEBUG */
+
         usart1_rx_fifo.rx_fifo = ring_fifo_init(
             usart1_rx_fifo.rx_fifo_buf, sizeof(uint8_t) * USART1_RX_FIFO_SZIE,
             RF_TYPE_STREAM);
-
-        if (usart1_rx_fifo.rx_fifo == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart1_rx_fifo.rx_fifo == NULL);
+#endif /* DEBUG */
 
         __HAL_RCC_DMA1_CLK_ENABLE();
-        if (HAL_DMA_Init(&usart1_dmarx_handle) != HAL_OK) {
-            bsp_error_handle();
-        }
+        res = HAL_DMA_Init(&usart1_dmarx_handle);
+#ifdef DEBUG
+        assert(res == HAL_OK);
+#endif /* DEBUG */
+
         __HAL_LINKDMA(&usart1_handle, hdmarx, usart1_dmarx_handle);
 
         HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, USART1_DMA_RX_IT_PREEMPT,
@@ -397,27 +407,29 @@ void uart_dmarx_init(UART_HandleTypeDef *huart) {
         usart2_rx_fifo.head_ptr = 0;
         usart2_rx_fifo.recv_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * USART2_RX_BUF_SIZE);
-        if (usart2_rx_fifo.recv_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart2_rx_fifo.recv_buf != NULL);
+#endif /* DEBUG */
 
         usart2_rx_fifo.rx_fifo_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * USART2_RX_FIFO_SZIE);
-        if (usart2_rx_fifo.recv_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart2_rx_fifo.rx_fifo_buf != NULL);
+#endif /* DEBUG */
+
         usart2_rx_fifo.rx_fifo = ring_fifo_init(
             usart2_rx_fifo.rx_fifo_buf, sizeof(uint8_t) * USART2_RX_FIFO_SZIE,
             RF_TYPE_STREAM);
-
-        if (usart2_rx_fifo.rx_fifo == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart2_rx_fifo.rx_fifo != NULL);
+#endif /* DEBUG */
 
         __HAL_RCC_DMA1_CLK_ENABLE();
-        if (HAL_DMA_Init(&usart2_dmarx_handle) != HAL_OK) {
-            bsp_error_handle();
-        }
+        res = HAL_DMA_Init(&usart2_dmarx_handle);
+#ifdef DEBUG
+        assert(res == HAL_OK);
+#endif /* DEBUG */
+
         __HAL_LINKDMA(&usart2_handle, hdmarx, usart2_dmarx_handle);
 
         HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, USART2_DMA_RX_IT_PREEMPT,
@@ -438,27 +450,29 @@ void uart_dmarx_init(UART_HandleTypeDef *huart) {
         usart3_rx_fifo.head_ptr = 0;
         usart3_rx_fifo.recv_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * USART3_RX_BUF_SIZE);
-        if (usart3_rx_fifo.recv_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart3_rx_fifo.recv_buf != NULL);
+#endif /* DEBUG */
 
         usart3_rx_fifo.rx_fifo_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * USART3_RX_FIFO_SZIE);
-        if (usart3_rx_fifo.recv_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart3_rx_fifo.rx_fifo_buf != NULL);
+#endif /* DEBUG */
+
         usart3_rx_fifo.rx_fifo = ring_fifo_init(
             usart3_rx_fifo.rx_fifo_buf, sizeof(uint8_t) * USART3_RX_FIFO_SZIE,
             RF_TYPE_STREAM);
-
-        if (usart3_rx_fifo.rx_fifo == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(usart3_rx_fifo.rx_fifo != NULL);
+#endif /* DEBUG */
 
         __HAL_RCC_DMA1_CLK_ENABLE();
-        if (HAL_DMA_Init(&usart3_dmarx_handle) != HAL_OK) {
-            bsp_error_handle();
-        }
+        res = HAL_DMA_Init(&usart3_dmarx_handle);
+#ifdef DEBUG
+        assert(res == HAL_OK);
+#endif /* DEBUG */
+
         __HAL_LINKDMA(&usart3_handle, hdmarx, usart3_dmarx_handle);
 
         HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, USART3_DMA_RX_IT_PREEMPT,
@@ -479,27 +493,29 @@ void uart_dmarx_init(UART_HandleTypeDef *huart) {
         uart4_rx_fifo.head_ptr = 0;
         uart4_rx_fifo.recv_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * UART4_RX_BUF_SIZE);
-        if (uart4_rx_fifo.recv_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(uart4_rx_fifo.recv_buf != NULL);
+#endif /* DEBUG */
 
         uart4_rx_fifo.rx_fifo_buf =
             (uint8_t *)malloc(sizeof(uint8_t) * UART4_RX_FIFO_SZIE);
-        if (uart4_rx_fifo.recv_buf == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(uart4_rx_fifo.rx_fifo_buf != NULL);
+#endif /* DEBUG */
+
         uart4_rx_fifo.rx_fifo = ring_fifo_init(
             uart4_rx_fifo.rx_fifo_buf, sizeof(uint8_t) * UART4_RX_FIFO_SZIE,
             RF_TYPE_STREAM);
-
-        if (uart4_rx_fifo.rx_fifo == NULL) {
-            bsp_error_handle();
-        }
+#ifdef DEBUG
+        assert(uart4_rx_fifo.rx_fifo != NULL);
+#endif /* DEBUG */
 
         __HAL_RCC_DMA2_CLK_ENABLE();
-        if (HAL_DMA_Init(&uart4_dmarx_handle) != HAL_OK) {
-            bsp_error_handle();
-        }
+        res = HAL_DMA_Init(&uart4_dmarx_handle);
+#ifdef DEBUG
+        assert(res == HAL_OK);
+#endif /* DEBUG */
+
         __HAL_LINKDMA(&uart4_handle, hdmarx, uart4_dmarx_handle);
 
         HAL_NVIC_SetPriority(DMA2_Channel3_IRQn, UART4_DMA_RX_IT_PREEMPT,
@@ -634,7 +650,7 @@ uint32_t uart_dmatx_write(UART_HandleTypeDef *huart, const void *data,
 }
 
 /**
- * @brief 把缓冲区中的数据通过DMA发送
+ * @brief 把FIFO中的数据通过DMA发送
  *
  * @param huart 串口句柄
  * @return 成功发送的长度

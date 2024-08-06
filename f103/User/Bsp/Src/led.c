@@ -30,23 +30,7 @@ void led_init(void) {
     gpio_initure.Speed = GPIO_SPEED_FREQ_HIGH;
     HAL_GPIO_Init(LED1_GPIO_PORT, &gpio_initure);
 
-    LED2_GPIO_ENABLE();
-    gpio_initure.Pin = LED2_GPIO_PIN;
-    gpio_initure.Mode = GPIO_MODE_OUTPUT_PP;
-    gpio_initure.Pull = GPIO_PULLUP;
-    gpio_initure.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(LED2_GPIO_PORT, &gpio_initure);
-
-    LED3_GPIO_ENABLE();
-    gpio_initure.Pin = LED3_GPIO_PIN;
-    gpio_initure.Mode = GPIO_MODE_OUTPUT_PP;
-    gpio_initure.Pull = GPIO_PULLUP;
-    gpio_initure.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(LED3_GPIO_PORT, &gpio_initure);
-
     /* 关闭LED */
     LED0_OFF();
     LED1_OFF();
-    LED2_OFF();
-    LED3_OFF();
 }

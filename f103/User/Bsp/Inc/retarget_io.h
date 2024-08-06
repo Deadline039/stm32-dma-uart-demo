@@ -21,7 +21,7 @@
 
 // <o RE_STDOUT_TARGET> 重定向stdout位置
 //  <0=>串口 <1=>ITM
-#define RE_STDOUT_TARGET 0
+#define RE_STDOUT_TARGET 1
 
 #if (RE_STDOUT_TARGET == 0)
 
@@ -31,7 +31,7 @@
 //  <USART3=> 串口3
 //  <UART4=> 串口4
 //  <UART5=> 串口5
-#define STDOUT_UART UART5
+#define STDOUT_UART USART1
 
 #endif /* RE_STDOUT_TARGET == 0 */
 
@@ -56,7 +56,7 @@
 //  <USART3=> 串口3
 //  <UART4=> 串口4
 //  <UART5=> 串口5
-#define STDERR_UART UART4
+#define STDERR_UART USART1
 
 #endif /* RE_STDERR_TARGET == 0 */
 

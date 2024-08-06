@@ -12,19 +12,19 @@ PC TX    ---> 串口1 RX
 
 在1Mbps波特率下发送200多KB文件，没有丢失。
 
-<img src="https://github.com/Deadline039/stm32-dma-uart-demo/blob/main/assets/PixPin_2024-08-02_19-29-00.png" width="460px" align="center">
-<img src="https://github.com/Deadline039/stm32-dma-uart-demo/blob/main/assets/PixPin_2024-08-02_19-30-13.png" width="700px" align="center">
+<img src="https://github.com/Deadline039/stm32-dma-uart-demo/blob/main/assets/PixPin_2024-08-02_19-29-00.png" width="75%">
+<img src="https://github.com/Deadline039/stm32-dma-uart-demo/blob/main/assets/PixPin_2024-08-02_19-30-13.png" width="100%">
 
 
 在`User/Bsp/Inc/uart.h`中可以配置是否启用串口，是否使用DMA，DMA缓冲区大小，中断优先级等。
 
 该文件支持使用CMSIS Configuration Wizard配置。如果在Keil中配置，请将文件编码更改为GB2312。
 
-<img src="https://github.com/Deadline039/stm32-dma-uart-demo/blob/main/assets/PixPin_2024-08-02_19-21-04.png" width="460px" align="center">
+<img src="https://github.com/Deadline039/stm32-dma-uart-demo/blob/main/assets/PixPin_2024-08-02_19-21-04.png" width="75%">
 
 ## 测试平台
 
-STM32F103RCT6, 256KB ROM, 64KB RAM. 共3个USART，2个UART。其中UART5无DMA。
+正点原子MiniSTM32, STM32F103RCT6, 256KB ROM, 64KB RAM. 共3个USART，2个UART。其中UART5无DMA。
 
 ## 编译环境
 

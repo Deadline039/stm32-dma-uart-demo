@@ -7,10 +7,16 @@
  * @ref     正点原子, 野火, CMSIS
  * @ref
  * https://developer.arm.com/documentation/100073/0611/the-c-and-c---library-functions-reference
+ * https://developer.arm.com/documentation/100073/0622/The-Arm-C-and-C---Libraries/ISO-C-library-implementation-definition
  */
 
 #include "retarget_io.h"
 #include <stdio.h>
+
+/**
+ * @defgroup 重定向stdout, stderr
+ * @{
+ */
 
 #if ((RETARGET_STDOUT == 1) || (RETARGET_STDERR == 1))
 #if defined(__ARMCC_VERSION) /* Compiler */
@@ -77,17 +83,21 @@ char *_sys_command_string(char *cmd, int len) {
     return NULL;
 }
 
+/* 如果不定义, 在不启用MicroLib的情况下会链接_sys_open */
+FILE __stdout;
+FILE __stderr;
+
 /**
  * @brief 向文件写入字符
  *
  * @param ch 写入的字符
- * @param f 文件指针
+ * @param file 文件指针
  * @return 写入的字符
  */
-int fputc(int ch, FILE *f) {
+int fputc(int ch, FILE *file) {
 
 #if ((RETARGET_STDOUT == 1) && (RETARGET_STDERR == 1))
-    if (f == stdout) {
+    if (file == stdout) {
 #endif /* ((RETARGET_STDOUT == 1) && (RETARGET_STDERR == 1)) */
 
 #if (RETARGET_STDOUT == 1)
@@ -105,7 +115,7 @@ int fputc(int ch, FILE *f) {
 #endif /* RETARGET_STDOUT == 1 */
 
 #if ((RETARGET_STDOUT == 1) && (RETARGET_STDERR == 1))
-    } else if (f == stderr) {
+    } else if (file == stderr) {
 #endif /* ((RETARGET_STDOUT == 1) && (RETARGET_STDERR == 1)) */
 
 #if (RETARGET_STDERR == 1)
@@ -136,15 +146,15 @@ int fputc(int ch, FILE *f) {
 /**
  * @brief gcc文件写入函数
  *
- * @param f 文件指针
+ * @param file 文件指针
  * @param ptr 字符串
  * @param len 字符串长度
  * @return 字符串长度
  */
-int _write(int f, char *ptr, int len) {
+int _write(int file, char *ptr, int len) {
 
 #if ((RETARGET_STDOUT == 1) && (RETARGET_STDERR == 1))
-    if (f == stdout) {
+    if (file == 1) {
 #endif /* ((RETARGET_STDOUT == 1) && (RETARGET_STDERR == 1)) */
 
 #if (RETARGET_STDOUT == 1)
@@ -169,7 +179,7 @@ int _write(int f, char *ptr, int len) {
 #endif /* RETARGET_STDOUT == 1 */
 
 #if ((RETARGET_STDOUT == 1) && (RETARGET_STDERR == 1))
-    } else if (f == stderr) {
+    } else if (file == 2) {
 #endif /* ((RETARGET_STDOUT == 1) && (RETARGET_STDERR == 1)) */
 
 #if (RETARGET_STDERR == 1)
@@ -212,3 +222,38 @@ void _sys_exit(int x) {
 #endif /* Compiler */
 
 #endif /* ((RETARGET_STDOUT == 1) || (RETARGET_STDERR == 1)) */
+
+/**
+ * @}
+ */
+
+/**
+ * @defgroup 重定向断言
+ * @note GCC无需定义
+ * @{
+ */
+
+#if defined(__ARMCC_VERSION) /* 使用ARM Compiler */
+
+/**
+ * @brief 断言失败最终会链接到此函数
+ *
+ * @param expr 表达式
+ * @param file 文件名
+ * @param line 行数
+ */
+void __aeabi_assert(const char *expr, const char *file, int line) {
+#if (RETARGET_STDERR == 1)
+    fprintf(stderr, "Assertion failed: %s, file: %s, line: %d\r\n", expr, file,
+            line);
+#else  /* RETARGET_STDERR == 1 */
+    fprintf(stdout, "Assertion failed: %s, file: %s, line: %d\r\n", expr, file,
+            line);
+#endif /* RETARGET_STDERR == 1 */
+}
+
+#endif /* Compiler */
+
+/**
+ * @}
+ */

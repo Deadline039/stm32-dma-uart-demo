@@ -504,6 +504,11 @@
               <FileType>1</FileType>
               <FilePath>User/Bsp/Src/ring_fifo.c</FilePath>
             </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\Bsp\Src\delay.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -515,5 +520,14 @@
     <components/>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>dma_uart_demo</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>
