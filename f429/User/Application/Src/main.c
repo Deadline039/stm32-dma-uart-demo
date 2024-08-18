@@ -8,6 +8,8 @@
 
 #include "includes.h"
 
+uint8_t buffer[200];
+
 /**
  * @brief 主函数
  *
@@ -15,6 +17,12 @@
  */
 int main(void) {
     bsp_init();
-
-    while (1) {}
+    uint32_t len = 0;
+    while (1) {
+        len = uart_dmarx_read(&uart7_handle, buffer, sizeof(buffer));
+        uart_dmatx_send(&uart7_handle);
+        if (len > 0) {
+            uart_dmatx_write(&uart7_handle, buffer, len);
+        }
+    }
 }
