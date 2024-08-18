@@ -63,7 +63,10 @@ void bsp_init(void) {
     HAL_Init();
     system_clock_config();
     delay_init(180);
-
+    uart_init(&uart7_handle, 115200, UART_WORDLENGTH_8B, USART_STOPBITS_1,
+            UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
+    uart_init(&uart8_handle, 115200, UART_WORDLENGTH_8B, USART_STOPBITS_1,
+            UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
     led_init();
     key_init();
 }

@@ -142,6 +142,12 @@ UART_HandleTypeDef uart7_handle = {.Instance = UART7};
  * @brief 串口7中断服务函数
  */
 void UART7_IRQHandler(void) {
+#if (UART7_USE_IDLE_IT == 1)
+    if (__HAL_UART_GET_FLAG(&uart7_handle, UART_FLAG_IDLE)) {
+        __HAL_UART_CLEAR_IDLEFLAG(&uart7_handle);
+        uart_dmarx_idle_callback(&uart7_handle);
+    }
+#endif            
     HAL_UART_IRQHandler(&uart7_handle); /* 调用HAL库中断处理公用函数 */
 }
 
@@ -154,6 +160,12 @@ UART_HandleTypeDef uart8_handle = {.Instance = UART8};
  * @brief 串口8中断服务函数
  */
 void UART8_IRQHandler(void) {
+#if (UART8_USE_IDLE_IT == 1)
+    if (__HAL_UART_GET_FLAG(&uart8_handle, UART_FLAG_IDLE)) {
+        __HAL_UART_CLEAR_IDLEFLAG(&uart8_handle);
+        uart_dmarx_idle_callback(&uart8_handle);
+    }
+#endif                                  /*UART8_USE_IDLE_IT == 1*/
     HAL_UART_IRQHandler(&uart8_handle); /* 调用HAL库中断处理公用函数 */
 }
 
