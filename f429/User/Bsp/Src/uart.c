@@ -110,6 +110,12 @@ UART_HandleTypeDef uart5_handle = {.Instance = UART5};
  * @brief 串口5中断服务函数
  */
 void UART5_IRQHandler(void) {
+    #if (UART5_USE_IDLE_IT == 1)
+    if (__HAL_UART_GET_FLAG(&uart5_handle, UART_FLAG_IDLE)) {
+        __HAL_UART_CLEAR_IDLEFLAG(&uart5_handle);
+        uart_dmarx_idle_callback(&uart5_handle);
+    }
+#endif /* UART5_USE_IDLE_IT == 1 */
     HAL_UART_IRQHandler(&uart5_handle); /* 调用HAL库中断处理公用函数 */
 }
 
