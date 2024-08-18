@@ -19,10 +19,10 @@ int main(void) {
     bsp_init();
     uint32_t len = 0;
     while (1) {
-        len = uart_dmarx_read(&uart7_handle, buffer, sizeof(buffer));
-        uart_dmatx_send(&uart7_handle);
+        len = uart_dmarx_read(&uart4_handle, buffer, sizeof(buffer));
+        uart_dmatx_send(&uart4_handle);
         if (len > 0) {
-            uart_dmatx_write(&uart7_handle, buffer, len);
+            uart_dmatx_write(&uart4_handle, buffer, len);
         }
     }
 }
