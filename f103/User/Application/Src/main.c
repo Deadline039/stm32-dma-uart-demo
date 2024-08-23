@@ -8,6 +8,18 @@
 
 #include "includes.h"
 
+uint8_t buf1[300];
+uint32_t len1;
+
+uint8_t buf2[300];
+uint32_t len2;
+
+uint8_t buf3[300];
+uint32_t len3;
+
+uint8_t buf4[300];
+uint32_t len4;
+
 /**
  * @brief 主函数
  *
@@ -34,20 +46,7 @@ int main(void) {
      * PC10     ---->   PC RX
      */
 
-    uint8_t buf1[300];
-    uint32_t len1;
-
-    uint8_t buf2[300];
-    uint32_t len2;
-
-    uint8_t buf3[300];
-    uint32_t len3;
-
-    uint8_t buf4[300];
-    uint32_t len4;
-
     while (1) {
-
         uart_dmatx_send(&usart1_handle);
         len1 = uart_dmarx_read(&usart1_handle, buf1, sizeof(buf1));
         if (len1 > 0) {

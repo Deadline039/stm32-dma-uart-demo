@@ -63,10 +63,18 @@ void bsp_init(void) {
     HAL_Init();
     system_clock_config();
     delay_init(180);
-    uart_init(&uart7_handle, 115200, UART_WORDLENGTH_8B, USART_STOPBITS_1,
-            UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
-    uart_init(&uart8_handle, 115200, UART_WORDLENGTH_8B, USART_STOPBITS_1,
-            UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
+    uart_init(&usart1_handle, 1000000, UART_WORDLENGTH_8B, UART_STOPBITS_1,
+              UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
+    uart_init(&usart2_handle, 1000000, UART_WORDLENGTH_8B, UART_STOPBITS_1,
+              UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
+    uart_init(&usart3_handle, 1000000, UART_WORDLENGTH_8B, UART_STOPBITS_1,
+              UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
+    uart_init(&uart4_handle, 1000000, UART_WORDLENGTH_8B, UART_STOPBITS_1,
+              UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
+    uart_init(&uart5_handle, 1000000, UART_WORDLENGTH_8B, UART_STOPBITS_1,
+              UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
+    uart_init(&usart6_handle, 1000000, UART_WORDLENGTH_8B, UART_STOPBITS_1,
+              UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_MODE_TX_RX);
     led_init();
     key_init();
 }

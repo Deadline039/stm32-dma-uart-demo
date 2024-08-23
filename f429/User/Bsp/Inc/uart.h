@@ -17,7 +17,7 @@
 // <e> 启用串口1
 // ==================
 
-#define USART1_ENABLE 0
+#define USART1_ENABLE 1
 
 #if (USART1_ENABLE == 1)
 
@@ -105,7 +105,7 @@ extern UART_HandleTypeDef usart1_handle;
 // <e> 启用串口2
 // ==================
 
-#define USART2_ENABLE 0
+#define USART2_ENABLE 1
 
 #if (USART2_ENABLE == 1)
 
@@ -193,7 +193,7 @@ extern UART_HandleTypeDef usart2_handle;
 // <e> 启用串口3
 // ==================
 
-#define USART3_ENABLE 0
+#define USART3_ENABLE 1
 
 #if (USART3_ENABLE == 1)
 
@@ -281,7 +281,7 @@ extern UART_HandleTypeDef usart3_handle;
 // <e> 启用串口4
 // ==================
 
-#define UART4_ENABLE 0
+#define UART4_ENABLE 1
 
 #if (UART4_ENABLE == 1)
 
@@ -360,7 +360,7 @@ extern UART_HandleTypeDef uart4_handle;
 // <e> 启用串口5
 // ==================
 
-#define UART5_ENABLE 0
+#define UART5_ENABLE 1
 
 #if (UART5_ENABLE == 1)
 
@@ -439,7 +439,7 @@ extern UART_HandleTypeDef uart5_handle;
 // <e> 启用串口6
 // ==================
 
-#define USART6_ENABLE 0
+#define USART6_ENABLE 1
 
 #if (USART6_ENABLE == 1)
 
@@ -527,7 +527,7 @@ extern UART_HandleTypeDef usart6_handle;
 // <e> 启用串口7
 // ==================
 
-#define UART7_ENABLE 1
+#define UART7_ENABLE 0
 
 #if (UART7_ENABLE == 1)
 
@@ -609,7 +609,7 @@ extern UART_HandleTypeDef uart7_handle;
 // <e> 启用串口8
 // ==================
 
-#define UART8_ENABLE 1
+#define UART8_ENABLE 0
 
 #if (UART8_ENABLE == 1)
 
