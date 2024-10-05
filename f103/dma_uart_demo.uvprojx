@@ -10,7 +10,7 @@
       <TargetName>dma_uart_demo</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6210000::V6.21::ARMCLANG</pCCUsed>
+      <pCCUsed>6220000::V6.22::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -323,7 +323,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>3</wLevel>
+            <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
@@ -340,7 +340,7 @@
               <MiscControls>-Wno-padded -Wno-unsafe-buffer-usage -Wno-reserved-identifier -Wno-missing-noreturn -Wno-covered-switch-default -Wno-switch-enum -Wno-missing-prototypes -Wno-newline-eof -Wno-gnu-pointer-arith -Wno-declaration-after-statement -Wno-sign-conversion -Wno-implicit-int-conversion -Wno-double-promotion -Wno-missing-field-initializers -Wno-undef -Wno-self-assign -Wno-extra-semi-stmt -Wno-missing-variable-declarations -Wno-cast-align -Wno-implicit-float-conversion -Wno-missing-braces -Wno-cast-qual -Wno-format-nonliteral -Wno-gnu-binary-literal</MiscControls>
               <Define>STM32F103xE,USE_HAL_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>Drivers\CMSIS\Include;Drivers\STM32F1xx_HAL_Driver\Inc;Drivers\CMSIS\Device\ST\STM32F1xx\Include;User\Application\Inc;User\Bsp\Inc;.cmsis\include</IncludePath>
+              <IncludePath>Drivers\CMSIS\Include;Drivers\STM32F1xx_HAL_Driver\Inc;Drivers\CMSIS\Device\ST\STM32F1xx\Include;User\Application\Inc;User\Bsp\OnChip\Inc;User\Bsp\OnBoard\Inc;User\Utils\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -371,7 +371,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>e:\Users\Deadline039\Desktop\dma_uart_demo\&lt;YOUR_SCATTER_FILE&gt;.sct</ScatterFile>
+            <ScatterFile>&lt;YOUR_SCATTER_FILE&gt;.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -381,6 +381,66 @@
         </TargetArmAds>
       </TargetOption>
       <Groups>
+        <Group>
+          <GroupName>Utils</GroupName>
+          <Files>
+            <File>
+              <FileName>ring_fifo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/Utils/Src/ring_fifo.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Bsp/OnBoard</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/Bsp/OnBoard/Src/bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/Bsp/OnBoard/Src/key.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/Bsp/OnBoard/Src/led.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Bsp/OnChip</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/Bsp/OnChip/Src/bsp_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_dma_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/Bsp/OnChip/Src/bsp_dma_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/Bsp/OnChip/Src/bsp_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>core_delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/Bsp/OnChip/Src/core_delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>retarget_io.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/Bsp/OnChip/Src/retarget_io.c</FilePath>
+            </File>
+          </Files>
+        </Group>
         <Group>
           <GroupName>Drivers/CMSIS</GroupName>
           <Files>
@@ -420,6 +480,11 @@
               <FilePath>Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c</FilePath>
             </File>
             <File>
+              <FileName>stm32f1xx_hal_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f1xx_hal_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c</FilePath>
@@ -452,7 +517,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>User</GroupName>
+          <GroupName>Application</GroupName>
           <Files>
             <File>
               <FileName>main.c</FileName>
@@ -466,51 +531,6 @@
             </File>
           </Files>
         </Group>
-        <Group>
-          <GroupName>Bsp</GroupName>
-          <Files>
-            <File>
-              <FileName>bsp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>User/Bsp/Src/bsp.c</FilePath>
-            </File>
-            <File>
-              <FileName>dma_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>User/Bsp/Src/dma_uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>User/Bsp/Src/key.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>User/Bsp/Src/led.c</FilePath>
-            </File>
-            <File>
-              <FileName>retarget_io.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>User/Bsp/Src/retarget_io.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>User/Bsp/Src/uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>ring_fifo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>User/Bsp/Src/ring_fifo.c</FilePath>
-            </File>
-            <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\User\Bsp\Src\delay.c</FilePath>
-            </File>
-          </Files>
-        </Group>
       </Groups>
     </Target>
   </Targets>
@@ -520,14 +540,5 @@
     <components/>
     <files/>
   </RTE>
-
-  <LayerInfo>
-    <Layers>
-      <Layer>
-        <LayName>dma_uart_demo</LayName>
-        <LayPrjMark>1</LayPrjMark>
-      </Layer>
-    </Layers>
-  </LayerInfo>
 
 </Project>
